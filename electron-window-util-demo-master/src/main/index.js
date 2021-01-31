@@ -1,4 +1,3 @@
-'use strict'
 
 // eslint-disable-next-line standard/object-curly-even-spacing
 import {app, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
@@ -21,7 +20,8 @@ let v
 const winURL = process.env.NODE_ENV === 'development'
     ? `http://localhost:9080`
     : `file://${__dirname}/index.html`
-
+// 添加此行代码，可以弹出窗口
+global.baseUrl = winURL;
 function createWindow () {
   /**
    * Initial window options
@@ -84,8 +84,6 @@ function createWindow () {
     }
     mainWindow.show()
   })
-
-  tray.setContextMenu(contextMenu)
 
   var count = 0
 

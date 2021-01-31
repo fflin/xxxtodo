@@ -245,7 +245,7 @@
 
         let config = util[type](_config)
 
-        console.log(config)
+        console.log('config --- ' + config)
 
         this.$Win.openWin(config)
       },

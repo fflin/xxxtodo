@@ -13,7 +13,7 @@
 
 <script>
   import taskList from './task-list'
-
+  const util = require('../../util/util');
   const dbUtil = require('../../db/dbUtil')
   const moment = require('moment')
 
@@ -42,7 +42,27 @@
           dbUtil.getFinishedData(moment().format('YYYYMMDD'), tab === 3, function (data) {
             that.taskList = data
           })
+          // this.openWin('bottomRightToup')
         }
+      },
+      async openWin (type) {
+        let _config = {
+          width: 300,
+          height: 300,
+          x: 0,
+          y: 0,
+          windowConfig: {
+            router: '/landing',
+            name: type,
+            data: ''
+          }
+        }
+
+        let config = util[type](_config)
+
+        console.log('config --- ' + config)
+
+        this.$Win.openWin(config)
       },
       removeItem (index) {
         this.taskList.splice(index, 1)
@@ -51,10 +71,23 @@
     watch: {
       tab (newVal) {
         // 切换tab清空详情栏的内容
-        this.$parent.$refs.detail.taskId = ''
-        this.$parent.$refs.detail.task = null
-        this.$parent.detailTab = newVal
-        this.loadData(newVal)
+        if (this.$parent != null) {
+          if (this.$parent.$refs != null) {
+            if (this.$parent.$refs.detail != null) {
+              this.$parent.$refs.detail.taskId = ''
+              this.$parent.$refs.detail.task = null
+              this.$parent.detailTab = newVal
+              this.loadData(newVal)
+            } else {
+              console.log('detail  == null')
+              this.loadData(newVal)
+            }
+          } else {
+            console.log('$refs == null')
+          }
+        } else {
+          console.log('$parent == null')
+        }
       }
     }
   }
